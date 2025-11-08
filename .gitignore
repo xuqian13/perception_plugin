@@ -1,0 +1,25 @@
+# Python缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 测试和临时文件
+.pytest_cache/
+.coverage
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 数据文件和日志
+core/logs/
+*.jsonl
+data/
+
+# 系统文件
+.DS_Store
+Thumbs.db

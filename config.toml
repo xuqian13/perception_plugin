@@ -1,0 +1,86 @@
+# 麦麦感知模块配置文件
+
+[plugin]
+# 是否启用插件
+enabled = true
+
+[perception]
+# 缓存有效期（秒）
+cache_ttl = 60
+
+[perception.device]
+# 是否启用设备状态感知
+enabled = true
+
+[perception.environment]
+# 是否启用环境感知
+enabled = false
+
+# 是否启用天气感知（需要API密钥）
+enable_weather = false
+
+# 天气API密钥（例如：OpenWeatherMap）
+weather_api_key = ""
+
+# 位置信息（例如：Beijing, CN）
+location = ""
+
+[perception.user]
+# 是否启用用户状态感知
+enabled = true
+
+[perception.context]
+# 是否启用会话上下文感知
+enabled = true
+
+[perception.self]
+# 是否启用自我状态感知（已集成项目本体的mood_manager）
+enabled = true
+
+# 是否将当前日程状态自动注入到回复的prompt中
+# 启用后，麦麦回复时会知道自己当前在做什么（如上课、吃饭、娱乐等）
+inject_schedule = true
+
+# ========== 新增高级感知模块 ==========
+
+[perception.behavior_pattern]
+# 是否启用行为模式感知
+enabled = true
+
+# 历史分析天数
+history_days = 30
+
+[perception.social_network]
+# 是否启用社交网络感知（适合群聊场景）
+enabled = true
+
+# 互动统计时间窗口（天）
+interaction_threshold_days = 7
+
+[perception.language_style]
+# 是否启用语言风格感知（可选功能，会增加性能开销）
+enabled = false
+
+# 历史分析窗口（条消息）
+history_window = 30
+
+[perception.event_sequence]
+# 是否启用事件序列感知（生日提醒、纪念日等）
+enabled = true
+
+# 是否自动检测事件
+auto_detect = true
+
+[perception.security]
+# 是否启用安全感知（建议保留）
+enabled = true
+
+# 敏感度级别：low（低）/ medium（中）/ high（高）
+sensitivity = "medium"
+
+[perception.plugin_status]
+# 插件系统感知模块
+# 注意：插件管理的修改功能（启用/禁用）已被禁用以防止权限绕过
+# 当前仅提供只读查询功能（查看插件状态、获取插件信息等）
+# 如需管理插件，请使用内置的 /pm 命令（需要管理员权限）
+enabled = true

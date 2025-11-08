@@ -1,0 +1,60 @@
+{
+  "manifest_version": 1,
+  "name": "perception_plugin",
+  "display_name": "麦麦感知模块",
+  "version": "1.0.0",
+  "description": "全方位的感知系统，让麦麦能够感知设备运行状况、环境信息、用户状态、会话上下文和自身状态",
+  "author": "MaiBot Community",
+  "license": "GPL-3.0-or-later",
+  "host_application": {
+    "min_version": "0.8.0",
+    "max_version": "1.0.0"
+  },
+  "keywords": ["感知", "设备监控", "环境感知", "用户分析", "上下文", "自我意识"],
+  "categories": ["Perception", "Enhancement", "Monitoring"],
+  "dependencies": [],
+  "python_dependencies": [
+    {
+      "package_name": "psutil",
+      "version": ">=5.8.0",
+      "optional": false,
+      "description": "系统和进程监控库"
+    },
+    {
+      "package_name": "pynvml",
+      "version": "",
+      "optional": true,
+      "description": "NVIDIA GPU监控库（可选）"
+    }
+  ],
+  "config_file": "config.toml",
+  "enabled": true,
+  "components": {
+    "event_handlers": [
+      {
+        "name": "perception_message_handler",
+        "event_type": "ON_MESSAGE",
+        "description": "记录消息用于感知分析"
+      },
+      {
+        "name": "perception_llm_handler",
+        "event_type": "POST_LLM",
+        "description": "记录LLM调用用于自我状态分析"
+      }
+    ],
+    "tools": [
+      {
+        "name": "get_perception",
+        "description": "获取麦麦的全方位感知状态"
+      },
+      {
+        "name": "get_device_status",
+        "description": "获取设备运行状况"
+      },
+      {
+        "name": "get_context_status",
+        "description": "获取会话上下文信息"
+      }
+    ]
+  }
+}
