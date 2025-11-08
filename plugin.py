@@ -152,18 +152,17 @@ class PerceptionMessageHandler(BaseEventHandler):
 
 
 class PerceptionLLMHandler(BaseEventHandler):
-    """感知LLM调用处理器 - 记录LLM调用并注入日程状态"""
+    """感知LLM调用处理器 - 记录LLM调用"""
 
     event_type = EventType.POST_LLM
     handler_name = "perception_llm_handler"
-    handler_description = "记录LLM调用并注入当前日程状态到prompt"
+    handler_description = "记录LLM调用次数用于自我状态感知"
     weight = 5
     intercept_message = False
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.enabled = self.get_config("plugin.enabled", True)
-        self.inject_schedule = self.get_config("perception.self.inject_schedule", True)
 
     async def execute(
         self, message: MaiMessages | None
@@ -178,47 +177,6 @@ class PerceptionLLMHandler(BaseEventHandler):
 
             # 记录消息处理
             perception_manager.record_message_processed(1)
-
-            # 注入日程信息到prompt
-            if self.inject_schedule and message.llm_prompt:
-                try:
-                    # 获取chat_id
-                    chat_id = message.stream_id if hasattr(message, 'stream_id') else None
-
-                    if chat_id:
-                        # 获取感知快照
-                        snapshot = await perception_manager.get_perception_snapshot(chat_id=chat_id)
-
-                        if snapshot and snapshot.self_status:
-                            self_status = snapshot.self_status
-
-                            # 构建日程提示
-                            schedule_prompt = ""
-                            if self_status.current_activity:
-                                # 使用更自然、符合麦麦风格的提示语气
-                                schedule_prompt = f"\n【当前状态】\n"
-                                schedule_prompt += f"这会儿正{self_status.current_activity}"
-
-                                if self_status.current_activity_description:
-                                    schedule_prompt += f"（{self_status.current_activity_description}）"
-
-                                schedule_prompt += f"\n回复时可以自然提到当前在做什么，不要刻意强调。"
-
-                                if self_status.next_activity and self_status.next_activity_time:
-                                    schedule_prompt += f"\n等下{self_status.next_activity_time}要{self_status.next_activity}。"
-
-                                schedule_prompt += "\n"
-
-                            # 如果有日程信息，注入到prompt
-                            if schedule_prompt:
-                                original_prompt = str(message.llm_prompt)
-                                # 在prompt开头注入日程信息，使用更显眼的格式
-                                new_prompt = schedule_prompt + "\n" + original_prompt
-                                message.modify_llm_prompt(new_prompt, suppress_warning=True)
-                                logger.debug(f"已注入日程状态: {schedule_prompt.strip()}")
-
-                except Exception as e:
-                    logger.debug(f"注入日程信息失败: {e}")
 
             return True, True, None, None, message
 

@@ -37,10 +37,6 @@ enabled = true
 # 是否启用自我状态感知（已集成项目本体的mood_manager）
 enabled = true
 
-# 是否将当前日程状态自动注入到回复的prompt中
-# 启用后，麦麦回复时会知道自己当前在做什么（如上课、吃饭、娱乐等）
-inject_schedule = true
-
 # ========== 新增高级感知模块 ==========
 
 [perception.behavior_pattern]
